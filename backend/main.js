@@ -177,6 +177,18 @@ app.post("/login", (req, res) => {
     });
 });
 
+app.get("/logout", AuthcationToken, (req, res) => {
+  try {
+    req.user = null;
+
+    res.json({
+      message: "Logged out successfully",
+    });
+  } catch (err) {
+    console.error("Error during logout:", err);
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
 app.patch(
   "/expenses/:expenseId/:status",
   AuthcationToken,

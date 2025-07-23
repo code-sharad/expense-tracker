@@ -67,7 +67,7 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
   }
 
   async function handleLogout() {
-    const response = await fetch('/logout', {
+    const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/logout`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -79,6 +79,8 @@ export default function AuthProvider({ children }: { children: React.ReactNode }
     }
     setAuthToken(null);
     setCurrentUser(null);
+    localStorage.removeItem('authToken')
+    localStorage.removeItem('currentUser')
     console.log('Logged out successfully');
   }
 
