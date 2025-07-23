@@ -2,7 +2,6 @@
 import { AuthProvider } from './AuthContext'
 import { Routes, Route } from 'react-router'
 import ProtectedRoute from './ProtectedRoute'
-import Dashboard from './pages/Dashboard'
 import User from './pages/User'
 import Expense from './pages/Expense'
 import Manager from './pages/Manager'

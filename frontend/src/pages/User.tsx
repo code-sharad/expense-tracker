@@ -13,7 +13,6 @@ interface User {
 export default function User() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const { authToken, currentUser } = useAuth();
@@ -44,7 +43,7 @@ export default function User() {
       const data = await response.json();
       setUsers(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      console.log(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
     }
@@ -58,7 +57,6 @@ export default function User() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    setError(null);
 
     try {
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user`, {
@@ -85,7 +83,7 @@ export default function User() {
       setShowForm(false);
       fetchUsers();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create user');
+      console.log(err instanceof Error ? err.message : 'Failed to create user');
     } finally {
       setSubmitting(false);
     }

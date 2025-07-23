@@ -68,7 +68,8 @@ export default function Navbar() {
           <div className="flex">
             {/* Logo */}
             <div className="flex-shrink-0 flex items-center">
-              <Link to={logoNavigation[currentUser.role]} className="flex items-center space-x-2">
+              {/* @ts-expect-error any type */}
+              <Link to={logoNavigation[currentUser.role] } className="flex items-center space-x-2">
 
                 <span className="text-xl font-mono font-bold text-gray-900">Expense </span>
               </Link>
@@ -158,7 +159,7 @@ export default function Navbar() {
                   }`}
               >
                 <div className="flex items-center">
-                  <span className="mr-3">{item.icon}</span>
+                  {/* <span className="mr-3">{item.icon}</span> */}
                   {item.name}
                 </div>
               </Link>

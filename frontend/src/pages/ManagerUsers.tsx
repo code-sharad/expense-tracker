@@ -13,7 +13,6 @@ interface User {
 export default function ManagerUsers() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const { authToken, currentUser } = useAuth();
@@ -44,7 +43,7 @@ export default function ManagerUsers() {
       const data = await response.json();
       setUsers(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      console.log(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
     }
@@ -58,7 +57,6 @@ export default function ManagerUsers() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setSubmitting(true);
-    setError(null);
 
     try {
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/user`, {
@@ -85,33 +83,13 @@ export default function ManagerUsers() {
       setShowForm(false);
       fetchUsers();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create user');
+      console.log(err instanceof Error ? err.message : 'Failed to create user');
     } finally {
       setSubmitting(false);
     }
   };
 
-  // Handle user status toggle
-  // const toggleUserStatus = async (userId: string, currentStatus: boolean) => {
-  //   try {
-  //     const response = await fetch(`import.meta.env.VITE_BACKEND_URL/users/${userId}/status`, {
-  //       method: 'PATCH',
-  //       headers: {
-  //         'Authorization': `Bearer ${authToken}`,
-  //         'Content-Type': 'application/json'
-  //       },
-  //       body: JSON.stringify({ isActive: !currentStatus })
-  //     });
 
-  //     if (!response.ok) {
-  //       throw new Error('Failed to update user status');
-  //     }
-
-  //     fetchUsers(); // Refresh the list
-  //   } catch (err) {
-  //     setError(err instanceof Error ? err.message : 'Failed to update user status');
-  //   }
-  // };
 
   const getRoleBadge = (role: string) => {
     const baseClasses = "px-2 inline-flex text-xs leading-5 font-semibold rounded-full";
@@ -127,12 +105,6 @@ export default function ManagerUsers() {
     }
   };
 
-  // const getStatusBadge = (isActive: boolean) => {
-  //   const baseClasses = "px-2 inline-flex text-xs leading-5 font-semibold rounded-full";
-  //   return isActive
-  //     ? `${baseClasses} bg-green-100 text-green-800`
-  //     : `${baseClasses} bg-red-100 text-red-800`;
-  // };
 
   if (loading) {
     return (

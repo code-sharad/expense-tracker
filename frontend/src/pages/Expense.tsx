@@ -22,7 +22,6 @@ interface Expense {
 export default function Expense() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const { authToken } = useAuth();
 
@@ -51,7 +50,7 @@ export default function Expense() {
       const data = await response.json();
       setExpenses(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      console.log(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
     }
@@ -91,7 +90,7 @@ export default function Expense() {
       setShowForm(false);
       fetchExpenses();
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create expense');
+      console.log(err instanceof Error ? err.message : 'Failed to create expense');
     }
   };
 

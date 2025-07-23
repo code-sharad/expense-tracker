@@ -21,7 +21,6 @@ interface Expense {
 export default function Manager() {
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
   const [processingId, setProcessingId] = useState<string | null>(null);
   const [filterStatus, setFilterStatus] = useState<'all' | 'pending' | 'approved' | 'rejected'>('pending');
   const { authToken } = useAuth();
@@ -44,7 +43,7 @@ export default function Manager() {
       const data = await response.json();
       setExpenses(data);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+      console.log(err instanceof Error ? err.message : 'An error occurred');
     } finally {
       setLoading(false);
     }
@@ -57,7 +56,6 @@ export default function Manager() {
   // Handle expense approval/rejection
   const handleExpenseAction = async (expenseId: string, action: 'approved' | 'rejected') => {
     setProcessingId(expenseId);
-    setError(null);
 
     try {
       const response = await fetch(`${import.meta.env.VITE_BACKEND_URL}/expenses/${expenseId}/${action}`, {
@@ -76,7 +74,7 @@ export default function Manager() {
       // Refresh the list
       fetchExpenses();
     } catch (err) {
-      setError(err instanceof Error ? err.message : `Failed to ${action} expense`);
+      console.log(err instanceof Error ? err.message : `Failed to ${action} expense`);
     } finally {
       setProcessingId(null);
     }
